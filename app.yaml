@@ -1,0 +1,11 @@
+command:
+  - "python"
+  - "app/app.py"
+
+env:
+  - name: MODEL_SERVING_ENDPOINT
+    value: "databricks-meta-llama-3-1-70b-instruct"
+  - name: LAKEBASE_SECRET_SCOPE
+    value: "database"
+  - name: LAKEBASE_SECRET_KEY
+    value: "lakebase-url"

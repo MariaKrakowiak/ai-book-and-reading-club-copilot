@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Reading Club Copilot</title>
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📚 AI Reading Club Copilot</h1>
+
+    <p>
+        Ask the Reading Club Copilot for book recommendations,
+        compare books or manage your reading club.
+    </p>
+
+    <div class="chat">
+
+        <textarea
+            id="question"
+            placeholder="Example: Recommend a mystery book for our club that isn't too dark."
+        ></textarea>
+
+        <button onclick="askAgent()">
+            Ask Copilot
+        </button>
+
+        <div id="answer"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+async function askAgent() {
+
+    const question =
+        document.getElementById("question").value;
+
+    const answer =
+        document.getElementById("answer");
+
+    answer.innerHTML = "Thinking...";
+
+    // Connect this endpoint to the deployed agent.
+    const response = await fetch("/api/agent", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message: question
+        })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        answer.innerHTML = `<p class="error">Error: ${data.error || 'Unknown error occurred'}</p>`;
+        return;
+    }
+
+    // Handle the response - it contains {success, response: {message, tools_available}}
+    if (data.success && data.response) {
+        const message = data.response.message || JSON.stringify(data.response);
+        answer.innerHTML = `<p>${message}</p>`;
+    } else {
+        answer.innerHTML = `<p class="error">Error: ${data.error || 'No response received'}</p>`;
+    }
+}
+
+</script>
+
+</body>
+</html>

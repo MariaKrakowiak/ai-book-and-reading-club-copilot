@@ -1,0 +1,18 @@
+bundle:
+  name: ai_book_reading_club_copilot
+
+
+include:
+  - resources/*.yml
+
+
+targets:
+
+  dev:
+
+    mode: development
+
+    default: true
+
+    workspace:
+      host: ${var.databricks_host}

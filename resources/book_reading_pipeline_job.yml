@@ -1,0 +1,47 @@
+resources:
+
+  jobs:
+
+    book_reading_pipeline:
+
+      name: AI Book Reading Club Pipeline
+
+      tasks:
+
+        - task_key: ingest_books
+
+          spark_python_task:
+            python_file: ../pipeline/ingest_books.py
+
+          new_cluster:
+            spark_version: "15.4.x-scala2.12"
+            node_type_id: "i3.xlarge"
+            num_workers: 1
+
+
+        - task_key: sync_to_lakebase
+
+          depends_on:
+            - task_key: ingest_books
+
+          spark_python_task:
+            python_file: ../pipeline/sync_to_lakebase.py
+
+          new_cluster:
+            spark_version: "15.4.x-scala2.12"
+            node_type_id: "i3.xlarge"
+            num_workers: 1
+
+
+        - task_key: embed_books
+
+          depends_on:
+            - task_key: sync_to_lakebase
+
+          spark_python_task:
+            python_file: ../pipeline/embed_books.py
+
+          new_cluster:
+            spark_version: "15.4.x-scala2.12"
+            node_type_id: "i3.xlarge"
+            num_workers: 1
