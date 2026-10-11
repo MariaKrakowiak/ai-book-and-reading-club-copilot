@@ -1,5 +1,6 @@
 command:
-  - python
+  - streamlit
+  - run
   - app/app.py
 
 env:

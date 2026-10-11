@@ -1,4 +1,4 @@
-flask>=3.0
+streamlit>=1.38
 requests>=2.31
 pyspark
 sentence-transformers>=3.0
