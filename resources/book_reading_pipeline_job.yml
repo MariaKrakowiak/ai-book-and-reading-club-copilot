@@ -49,6 +49,12 @@ resources:
 
             environment_version: "5"
 
+            dependencies:
+
+              - psycopg2-binary
+
+              - sentence-transformers
+
       environment_variables:
 
         - environment_variables_key: lakebase
