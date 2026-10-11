@@ -15,4 +15,4 @@ targets:
     default: true
 
     workspace:
-      host: ${var.databricks_host}
+      host: https://dbc-a6ac90fa-841b.cloud.databricks.com

@@ -114,22 +114,26 @@ Write tools enforce validation at the database level:
 ## Deployment
 
 1. Configure Databricks authentication.
-2. Set the required bundle variables
-   (lakebase_host, model_serving_endpoint) and make sure the
-   configured Model Serving endpoint is available.
-3. Validate the bundle:
+2. Make sure the configured Model Serving endpoint is available.
+3. Create a Databricks secret scope named database with the
+   secret key lakebase-url containing the Lakebase connection
+   URL (postgresql://user:password@host:5432/book_club).
+   The app reads the connection URL from this secret at
+   runtime.
+4. Validate the bundle:
 
- databricks bundle validate
+ databricks bundle validate --var "lakebase_database_url=<connection-url>"
 
-4. Deploy:
+5. Deploy:
 
- databricks bundle deploy
+ databricks bundle deploy --var "lakebase_database_url=<connection-url>"
 
-5. Run the ingestion job (ingest_books, sync_to_lakebase,
+6. Run the ingestion job (ingest_books, sync_to_lakebase,
    embed_books).
-6. Verify the Delta and Lakebase tables.
-7. Deploy the Databricks App with the MODEL_SERVING_ENDPOINT
-   environment variable configured.
+7. Verify the Delta and Lakebase tables.
+8. Open the Databricks App: MODEL_SERVING_ENDPOINT and
+   LAKEBASE_DATABASE_URL are configured through app.yaml,
+   with the connection URL injected from the secret scope.
 
 ## Demo
 

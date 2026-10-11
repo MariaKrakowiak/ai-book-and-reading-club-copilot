@@ -31,6 +31,8 @@ resources:
             spark_version: "15.4.x-scala2.12"
             node_type_id: "i3.xlarge"
             num_workers: 1
+            spark_env_vars:
+              LAKEBASE_DATABASE_URL: ${var.lakebase_database_url}
 
 
         - task_key: embed_books
@@ -45,3 +47,11 @@ resources:
             spark_version: "15.4.x-scala2.12"
             node_type_id: "i3.xlarge"
             num_workers: 1
+            spark_env_vars:
+              LAKEBASE_DATABASE_URL: ${var.lakebase_database_url}
+
+
+variables:
+
+  lakebase_database_url:
+    description: Lakebase Postgres connection URL (postgresql://user:password@host:5432/database)

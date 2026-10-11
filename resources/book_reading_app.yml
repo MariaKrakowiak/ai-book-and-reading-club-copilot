@@ -7,48 +7,9 @@ resources:
       source_code_path: .
 
       resources:
-        - name: book-reading-lakebase
-          description: Lakebase database for books, clubs, ratings and reading progress
-          permission: CAN_CONNECT
-
-      env:
-        - name: LAKEBASE_INSTANCE_NAME
-          value: ${var.lakebase_instance_name}
-
-        - name: LAKEBASE_DATABASE
-          value: ${var.lakebase_database}
-
-        - name: LAKEBASE_HOST
-          value: ${var.lakebase_host}
-
-        - name: LAKEBASE_PORT
-          value: "5432"
-
-        - name: LAKEBASE_USER
-          value: ${var.lakebase_user}
-
-        - name: MODEL_SERVING_ENDPOINT
-          value: ${var.model_serving_endpoint}
-
-        - name: BOOK_API
-          value: "openlibrary"
-
-variables:
-  lakebase_instance_name:
-    description: Lakebase instance name
-    default: book-reading-lakebase
-
-  lakebase_database:
-    description: Lakebase database name
-    default: book_club
-
-  lakebase_host:
-    description: Lakebase hostname
-
-  lakebase_user:
-    description: Lakebase database user
-    default: app_user
-
-  model_serving_endpoint:
-    description: Databricks Model Serving endpoint used by the agent
-    default: databricks-meta-llama-3-3-70b-instruct
+        - name: lakebase-url
+          description: Lakebase Postgres connection URL
+          secret:
+            scope: database
+            key: lakebase-url
+            permission: READ
