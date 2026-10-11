@@ -1,4 +1,4 @@
-# AI Book & Reading Club Copilot
+# AI Book and Reading Club Copilot
 
 An AI-powered reading club assistant built with Databricks.
 
@@ -18,7 +18,7 @@ Open Library
 Spark ingestion
      |
      v
-Delta
+Delta (book_club.books_raw)
      |
      v
 Lakebase
@@ -50,9 +50,15 @@ No API key is required.
 The API provides book titles, authors, publication information,
 subjects, ISBNs and cover information.
 
-## MCP / Agent tools
+## AI agent
 
-The agent can use the following tools:
+The agent is implemented in Python (agent/agent.py) and calls a
+Databricks Model Serving endpoint via the Databricks SDK
+(default endpoint: databricks-meta-llama-3-3-70b-instruct).
+
+## Agent tools
+
+The following tools are implemented in agent/tools.py:
 
 ### Read tools
 
@@ -91,32 +97,39 @@ pgvector.
 
 ## Agent guardrails
 
-The agent:
+The agent's system prompt (agent/prompts.py) instructs the agent to:
 
-- does not invent book information;
-- uses semantic search before making recommendations;
-- considers club ratings when recommending books;
-- does not claim that a write operation succeeded unless the
-  corresponding tool confirms it;
-- validates ratings;
-- does not create duplicate club-book relationships.
+- never invent book information;
+- use semantic search before making recommendations;
+- consider club ratings when recommending books;
+- never claim that a write operation succeeded unless the
+  corresponding tool confirms it.
+
+Write tools enforce validation at the database level:
+
+- ratings must be between 1 and 5;
+- duplicate club-book relationships are prevented with an
+  upsert (ON CONFLICT DO NOTHING);
 
 ## Deployment
 
 1. Configure Databricks authentication.
-2. Validate the bundle:
+2. Set the required bundle variables
+   (lakebase_host, model_serving_endpoint) and make sure the
+   configured Model Serving endpoint is available.
+3. Validate the bundle:
 
-databricks bundle validate
+ databricks bundle validate
 
-3. Deploy:
+4. Deploy:
 
-databricks bundle deploy
+ databricks bundle deploy
 
-4. Run the ingestion job.
-5. Verify the Delta and Lakebase tables.
-6. Generate book embeddings.
-7. Deploy the Databricks App.
-8. Configure the Agent Bricks agent with the application tools.
+5. Run the ingestion job (ingest_books, sync_to_lakebase,
+   embed_books).
+6. Verify the Delta and Lakebase tables.
+7. Deploy the Databricks App with the MODEL_SERVING_ENDPOINT
+   environment variable configured.
 
 ## Demo
 
@@ -141,5 +154,6 @@ This project demonstrates:
 - Embeddings
 - Vector search
 - AI agent
+- Model Serving endpoint integration
 - Read/write agent tools
 - Databricks App
