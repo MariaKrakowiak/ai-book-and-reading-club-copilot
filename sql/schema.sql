@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS recommendations (
     club_id BIGINT REFERENCES reading_clubs(id),
     book_id BIGINT REFERENCES books(id),
     reason TEXT,
-    score DOUBLE,
+    score DOUBLE PRECISION,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

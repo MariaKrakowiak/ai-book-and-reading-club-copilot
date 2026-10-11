@@ -1,0 +1,7 @@
+# Local files containing credentials - never commit
+lakebase_setup.py
+deploy.vars.local.yaml
+*.local.vars.*
+
+# Databricks bundle working files
+.databricks/

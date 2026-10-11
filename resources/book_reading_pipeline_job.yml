@@ -10,13 +10,10 @@ resources:
 
         - task_key: ingest_books
 
+          environment_key: default
+
           spark_python_task:
             python_file: ../pipeline/ingest_books.py
-
-          new_cluster:
-            spark_version: "15.4.x-scala2.12"
-            node_type_id: "i3.xlarge"
-            num_workers: 1
 
 
         - task_key: sync_to_lakebase
@@ -24,15 +21,12 @@ resources:
           depends_on:
             - task_key: ingest_books
 
+          environment_key: default
+
+          environment_variables_key: lakebase
+
           spark_python_task:
             python_file: ../pipeline/sync_to_lakebase.py
-
-          new_cluster:
-            spark_version: "15.4.x-scala2.12"
-            node_type_id: "i3.xlarge"
-            num_workers: 1
-            spark_env_vars:
-              LAKEBASE_DATABASE_URL: ${var.lakebase_database_url}
 
 
         - task_key: embed_books
@@ -40,18 +34,29 @@ resources:
           depends_on:
             - task_key: sync_to_lakebase
 
+          environment_key: default
+
+          environment_variables_key: lakebase
+
           spark_python_task:
             python_file: ../pipeline/embed_books.py
 
-          new_cluster:
-            spark_version: "15.4.x-scala2.12"
-            node_type_id: "i3.xlarge"
-            num_workers: 1
-            spark_env_vars:
-              LAKEBASE_DATABASE_URL: ${var.lakebase_database_url}
+      environments:
+
+        - environment_key: default
+
+          spec:
+
+            environment_version: "5"
+
+      environment_variables:
+
+        - environment_variables_key: lakebase
+
+          spec:
+
+            variables:
+
+              LAKEBASE_DATABASE_URL: "{{secrets/database/lakebase-url}}"
 
 
-variables:
-
-  lakebase_database_url:
-    description: Lakebase Postgres connection URL (postgresql://user:password@host:5432/database)
