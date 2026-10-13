@@ -19,7 +19,7 @@ app = Flask(__name__)
 # Initialize the reading club agent
 try:
     agent = ReadingClubAgent()
-except RuntimeError as e:
+except Exception as e:
     agent = None
     print(f"Warning: Agent not initialized - {e}")
 
@@ -134,5 +134,5 @@ def agent_chat():
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
-        port=8000
+        port=int(os.environ.get("PORT", 8000))
     )
