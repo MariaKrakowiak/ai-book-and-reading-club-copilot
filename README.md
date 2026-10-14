@@ -112,7 +112,13 @@ Write tools also enforce validation at the database level:
 - duplicate club-book relationships are prevented with an upsert
   (ON CONFLICT DO NOTHING)
 
-## 🚀 Deployment
+## 🌍 External deployment
+
+The app is also deployed on Render for public access:
+
+🔗 **https://ai-book-and-reading-club-copilot.onrender.com/**
+
+## 🚀 Databricks deployment
 
 1. 🔑 Configure Databricks authentication.
 2. 🧠 Make sure the configured Model Serving endpoint is available.
